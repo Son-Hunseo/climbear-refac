@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Climbear</string>
+    <string name="confirm">확인</string>
+    <string name="camera_permission_title">카메라 권한 허용</string>
+    <string name="camera_permission_type">필수 권한</string>
+    <string name="camera_permission_description_prefix">"카메라 권한 비활성화 시\n"</string>
+    <string name="camera_permission_description_highlight">정상적인 앱 사용이 불가</string>
+    <string name="camera_permission_description_suffix">합니다.</string>
+    <string name="camera_permission_manual_title">앱 권한 수동 허용</string>
+    <string name="camera_permission_manual"><![CDATA[설정 앱 → 앱 또는 애플리케이션 메뉴 → CLIMBEAR → 권한 또는 앱 권한]]></string>
+    <string name="location_permission_title">위치 권한 허용</string>
+    <string name="location_permission_type">선택 권한</string>
+    <string name="location_permission_description_prefix">"위치 권한 비활성화 시 "</string>
+    <string name="location_permission_description_highlight">일부 앱 기능이 제한</string>
+    <string name="location_permission_description_suffix">됩니다.</string>
+    <string name="location_permission_manual_title">위치 권한 활용 기능</string>
+    <string name="location_permission_manual">• 지점별 솔루션 적합도 조회\n• 나의 더클라임 지점별 이용 현황</string>
+    <string name="home_message_1">차근차근 클라이밍 실력을 쌓아 보아요.</string>
+    <string name="home_welcome">" 님, 환영합니다."</string>
+    <string name="climbing_dashboard_navigation">클라이밍 대시보드</string>
+    <string name="climbing_center_navigation">나의 암장 기록</string>
+    <string name="help_guide_navigation">보조 가이드</string>
+    <string name="take_photo_navigation">문제 찍고 힌트 보기</string>
+    <string name="record_navigation">영상 솔루션 받기</string>
+</resources>

@@ -1,0 +1,10 @@
+# application.yml
+spring:
+  application:
+    name: climb
+  profiles:
+    active: local
+    group:
+      local: "common,local"
+      dev: "common,dev"
+      prod: "common,prod"

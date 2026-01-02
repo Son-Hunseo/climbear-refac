@@ -1,0 +1,62 @@
+# application-common.yml - 모든 환경 공통 설정
+server:
+  port: 8080
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG   # Gateway 내부 로깅
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        # Spring Boot 서버로 라우팅 (Climb 서버)
+        - id: climb-api
+          uri: ${GATEWAY_CLIMB_URI:http://localhost:8081}
+          predicates:
+            - Path=/api/v1/**
+
+        # Swagger 주소 및 리소스들 (css, js)
+        - id: climb-swagger
+          uri: ${GATEWAY_CLIMB_URI:http://localhost:8081}
+          predicates:
+            - Path=/swagger-ui/**
+
+        # Swagger 문서 내용들
+        - id: climb-api-docs
+          uri: ${GATEWAY_CLIMB_URI:http://localhost:8081}
+          predicates:
+            - Path=/v3/api-docs/**
+
+        # FastAPI 서버로 라우팅 (AI 서버)
+        - id: ai-api
+          uri: ${GATEWAY_HOLD_URI:http://localhost:8000}
+          predicates:
+            - Path=/ai/v1/**
+
+        # Swagger 주소
+        - id: ai-docs
+          uri: ${GATEWAY_HOLD_URI:http://localhost:8000}
+          predicates:
+            - Path=/docs/**
+
+        # Swagger 문서 내용들
+        - id: ai-openapi
+          uri: ${GATEWAY_HOLD_URI:http://localhost:8000}
+          predicates:
+            - Path=/openapi.json
+            
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway  #actuator
+  endpoint:
+    gateway:
+      enabled: true                                    # actuator-gateway 엔드포인트(테스트용)
+    health:
+      show-details: always
+
+jwt:
+  secret:
+    key: ${JWT_SECRET_KEY}

@@ -1,0 +1,10 @@
+package com.climb.api.problem.repository;
+
+import com.climb.api.problem.domain.entity.ProblemData;
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProblemDataRepository extends MongoRepository<ProblemData, Integer> {
+
+}

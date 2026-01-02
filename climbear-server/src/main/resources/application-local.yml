@@ -1,0 +1,39 @@
+# application-local.yml (로컬 개발 설정)
+# 로컬 서버 환경 설정
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${LOCAL_DB_HOST}:${LOCAL_DB_PORT:3306}/${LOCAL_DB_NAME}?useSSL=false&serverTimezone=Asia/Seoul&useUniCode=yes&characterEncoding=UTF-8
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 5      # 최대 연결 수
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update # 스키마 자동 생성 옵션
+    properties:
+      hibernate:
+        show_sql: true # SQL 로그 출력 여부
+        format_sql: true # SQL 포맷팅 여부
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  data:
+    mongodb:
+      uri: mongodb://${LOCAL_MONGO_USERNAME}:${LOCAL_MONGO_PASSWORD}@${LOCAL_MONGO_HOST}:${LOCAL_MONGO_PORT}/${LOCAL_MONGO_NAME}
+
+# CORS 설정
+cors:
+  allowed-origins: "*"
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: "*"
+  max-age: 3600
+
+# 로컬 환경 로깅 설정
+logging:
+  level:
+    root: INFO
+    com.climb: DEBUG
+    org.springframework: DEBUG
+    org.hibernate.SQL: DEBUG # SQL 로그 상세 출력
+    org.hibernate.type.descriptor.sql: DEBUG # SQL 파라미터 값 출력
+    org.springframework.boot.autoconfigure: ERROR

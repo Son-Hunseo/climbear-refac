@@ -1,0 +1,71 @@
+# application-common.yml (공통 설정)
+# 서버 설정
+server:
+  port: 8080
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID}
+            client-secret: ${KAKAO_CLIENT_SECRET}
+            redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
+            authorization-grant-type: authorization_code
+            client-authentication-method: client_secret_post
+            client-name: Kakao
+            scope:
+              - profile_nickname
+              - account_email
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+  application:
+    name: climb
+  datasource:
+    hikari:
+      connection-timeout: 30000  # 연결 타임아웃(ms) 30초
+      minimum-idle: 5            # 최소 유휴 연결 수
+      idle-timeout: 600000       # 유휴 연결 타임아웃(ms) 10분
+      max-lifetime: 1800000      # 최대 연결 수명(ms) 30분
+  jackson:
+    serialization:
+      fail-on-empty-beans: false # 빈 객체 직렬화 허용
+      write-dates-as-timestamps: false # 날짜를 타임스탬프로 변환하지 않음
+    deserialization:
+      fail-on-unknown-properties: false # 알 수 없는 속성에 대한 역직렬화 실패 방지
+    date-format: yyyy-MM-dd HH:mm:ss # 날짜 포맷 지정
+    time-zone: Asia/Seoul # 시간대 설정
+
+# JWT 설정
+jwt:
+  secret: ${JWT_SECRET_KEY}
+  access-token-validity: 3600000    # 액세스 토큰 유효 시간 (1시간)
+  refresh-token-validity: 604800000 # 리프레시 토큰 유효 시간 (7일)
+
+# Swagger 설정
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    tryItOutEnabled: true
+  api-docs:
+    path: /v3/api-docs
+  info:
+    title: Climb API
+    description: API documentation for Climb application
+    version: 1.0.0
+    contact:
+      name: 관리자
+      email: admin@example.com
+    default-consumes-media-type: application/json
+    default-produces-media-type: application/json

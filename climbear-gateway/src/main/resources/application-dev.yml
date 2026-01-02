@@ -1,0 +1,5 @@
+# application-dev.yml - 개발 서버 환경
+spring:
+  config:
+    activate:
+      on-profile: dev

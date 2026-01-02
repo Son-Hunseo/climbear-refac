@@ -1,0 +1,43 @@
+# application-prod.yml (서버 운영 설정)
+# 운영 서버 환경 설정
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${PROD_DB_HOST}:${PROD_DB_PORT:3306}/${PROD_DB_NAME}?useSSL=true&serverTimezone=Asia/Seoul&useUniCode=yes&characterEncoding=UTF-8
+    username: ${PROD_DB_USERNAME}
+    password: ${PROD_DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20  # 운영 환경은 크게 설정
+      minimum-idle: 10       # 최소 유휴 연결도 더 많이
+  jpa:
+    open-in-view: false # OSIV 비활성화
+    hibernate:
+      ddl-auto: none # 운영 환경에서는 반드시 none으로 설정
+    properties:
+      hibernate:
+        show_sql: false # 운영 환경에서는 비활성화
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  data:
+    mongodb:
+      uri: mongodb://${PROD_MONGO_USERNAME}:${PROD_MONGO_PASSWORD}@${PROD_MONGO_HOST}:${PROD_MONGO_PORT}/${PROD_MONGO_NAME}
+
+# CORS 설정
+cors:
+  allowed-origins: "*" # 프로덕션 시 실제 도메인으로 제한
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: "*"
+  max-age: 3600
+
+# 운영 환경 로깅 설정
+logging:
+  level:
+    root: WARN
+    com.climb: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: OFF
+    org.hibernate.type.descriptor.sql: OFF
+    org.springframework.orm.jpa: WARN
+    org.springframework.transaction: WARN
+    com.zaxxer.hikari.pool: WARN
+    org.springframework.boot.autoconfigure: ERROR
