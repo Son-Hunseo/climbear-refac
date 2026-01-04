@@ -29,4 +29,4 @@ COPY --from=build /app/build/libs/climb-0.0.1-SNAPSHOT.jar app.jar
   
 # 애플리케이션 실행
 # active 부분 prod, dev, local 등 수정 필요
-ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-Duser.timezone=Asia/Seoul", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-Duser.timezone=Asia/Seoul", "-jar", "app.jar"]
