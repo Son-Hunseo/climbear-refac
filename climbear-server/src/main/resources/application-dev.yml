@@ -19,7 +19,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
   data:
     mongodb:
-      uri: mongodb://${DEV_MONGO_USERNAME}:${DEV_MONGO_PASSWORD}@${DEV_MONGO_HOST}:${DEV_MONGO_PORT}/${DEV_MONGO_NAME}
+      uri: mongodb+srv://${DEV_MONGO_USERNAME}:${DEV_MONGO_PASSWORD}@${DEV_MONGO_HOST}/${DEV_MONGO_NAME}?appName=${DEV_MONGO_APPNAME}
 
 # CORS 설정
 cors:
