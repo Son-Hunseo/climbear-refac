@@ -29,7 +29,7 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .servers(List.of(
-                        new Server().url("https://api.climbear.site").description("External"),
+                        new Server().url("https://climbear.sonhs.com").description("External"),
                         new Server().url("http://localhost:8080").description("Local")
                 ))
                 .info(new Info()
