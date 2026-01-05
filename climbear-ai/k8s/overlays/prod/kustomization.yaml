@@ -5,7 +5,6 @@ kind: Kustomization
 
 namespace: climbear # 나중에 환경 분리 생각해서 climbear-prod 로 바꾸던지..
 
-# base 인줄 알았는데, deprecated되고 resources로 통합됨.
 resources:
   - ../../base
 
@@ -28,3 +27,9 @@ patches:
       - op: replace
         path: /spec/replicas
         value: 1
+      - op: add
+        path: /spec/template/spec/tolerations
+        value: [{key: app, operator: Equal, value: ai, effect: NoSchedule}]
+      - op: add
+        path: /spec/template/spec/nodeSelector
+        value: {app: ai}
