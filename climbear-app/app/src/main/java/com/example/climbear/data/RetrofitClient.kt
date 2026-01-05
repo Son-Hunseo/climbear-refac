@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private const val BASE_URL = "https://api.climbear.site/"
+    private const val BASE_URL = "https://climbear.sonhs.com/"
 
     // refresh 전용 AuthApi Retrofit
     private val authApi by lazy {

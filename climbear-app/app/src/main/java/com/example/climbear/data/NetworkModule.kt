@@ -17,7 +17,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "https://api.climbear.site/"
+    private const val BASE_URL = "https://climbear.sonhs.com/"
 
     private val authApi by lazy {
         Retrofit.Builder()

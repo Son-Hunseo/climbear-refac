@@ -76,7 +76,7 @@ class SharedMediaUriViewModel @Inject constructor(
         private set
 
     val S3_BASE_URL =
-        "https://climbear-bucket.s3.ap-northeast-2.amazonaws.com/hold_image/raw_image/"
+        "https://refac-son.s3.ap-northeast-2.amazonaws.com/hold_image/raw_image/"
 
     fun updateImageUri(uri: Uri, isPicked: Boolean = false) {
         imageUri = uri
