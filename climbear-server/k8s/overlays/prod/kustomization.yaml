@@ -1,0 +1,37 @@
+# prerequisite:
+# - aws iam 인증정보가 담긴 Secret
+# - 즉, awssm-secret은 클러스터에서 climbear 네임스페이스에 직접 생성해야함 (access-key, secret-access-key 등록)
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: climbear # 나중에 환경 분리 생각해서 climbear-prod 로 바꾸던지..
+
+
+# base 인줄 알았는데, deprecated되고 resources로 통합됨.
+resources:
+  - ../../base
+  - secret-store.yaml
+  - external-secret.yaml
+  - ecr-token-external-secret.yaml
+  - ecr-auth-external-secret.yaml
+
+images:
+  - name: climbear-server-image
+    newName: 211125633965.dkr.ecr.ap-northeast-2.amazonaws.com/refac/climbear
+    newTag: v0.0
+
+patches:
+  - target:
+      kind: Deployment
+      name: refac-climbear-server
+    patch: |-
+      - op: add
+        path: /spec/template/spec/imagePullSecrets
+        value: [{name: ecr-registry-key}]
+      - op: add
+        path: /spec/template/spec/containers/0/envFrom
+        value: [{secretRef: {name: climbear-k8s-secret}}]
+      - op: replace
+        path: /spec/replicas
+        value: 2
