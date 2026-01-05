@@ -1,5 +1,4 @@
-# 베이스 이미지로 OpenJDK 17을 사용  
-FROM openjdk:17-slim AS build  
+FROM eclipse-temurin:17-jdk-jammy AS build
   
 # 기본 패키지 설치  
 RUN apt-get update && apt-get install -y bash  
@@ -20,7 +19,7 @@ RUN chmod +x gradlew
 RUN ./gradlew clean build -x test  
   
 # 빌드 결과물을 실행할 새로운 스테이지  
-FROM openjdk:17-slim  
+FROM eclipse-temurin:17-jdk-jammy
   
 WORKDIR /app  
   
@@ -29,4 +28,4 @@ COPY --from=build /app/build/libs/climbear-gateway-0.0.1-SNAPSHOT.jar app.jar
   
 # 애플리케이션 실행
 # active 부분 prod, dev, local 등 수정 필요
-ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-Duser.timezone=Asia/Seoul", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-Duser.timezone=Asia/Seoul", "-jar", "app.jar"]
