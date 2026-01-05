@@ -12,37 +12,37 @@ spring:
       routes:
         # Spring Boot 서버로 라우팅 (Climb 서버)
         - id: climb-api
-          uri: ${GATEWAY_CLIMB_URI:http://localhost:8081}
+          uri: ${GATEWAY_CLIMB_URI}
           predicates:
             - Path=/api/v1/**
 
         # Swagger 주소 및 리소스들 (css, js)
         - id: climb-swagger
-          uri: ${GATEWAY_CLIMB_URI:http://localhost:8081}
+          uri: ${GATEWAY_CLIMB_URI}
           predicates:
             - Path=/swagger-ui/**
 
         # Swagger 문서 내용들
         - id: climb-api-docs
-          uri: ${GATEWAY_CLIMB_URI:http://localhost:8081}
+          uri: ${GATEWAY_CLIMB_URI}
           predicates:
             - Path=/v3/api-docs/**
 
         # FastAPI 서버로 라우팅 (AI 서버)
         - id: ai-api
-          uri: ${GATEWAY_HOLD_URI:http://localhost:8000}
+          uri: ${GATEWAY_HOLD_URI}
           predicates:
             - Path=/ai/v1/**
 
         # Swagger 주소
         - id: ai-docs
-          uri: ${GATEWAY_HOLD_URI:http://localhost:8000}
+          uri: ${GATEWAY_HOLD_URI}
           predicates:
             - Path=/docs/**
 
         # Swagger 문서 내용들
         - id: ai-openapi
-          uri: ${GATEWAY_HOLD_URI:http://localhost:8000}
+          uri: ${GATEWAY_HOLD_URI}
           predicates:
             - Path=/openapi.json
             
