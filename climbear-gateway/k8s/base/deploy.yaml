@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: refac-climbear-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: climbear-gateway
+  template:
+    metadata:
+      labels:
+        app: climbear-gateway
+    spec:
+      containers:
+        - name: climbear-gateway
+          image: climbear-gateway-image # 가상 이름, Overlay에서 변경
+          ports:
+            - containerPort: 8080

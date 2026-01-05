@@ -1,0 +1,4 @@
+# ESO Helm 의 경우 메인 BE의 manifest에 정의되어 있다.
+resources:
+  - service.yaml
+  - deploy.yaml
