@@ -104,7 +104,7 @@ dependencies {
     implementation(libs.kakao)
 
     //MediaPipe
-    implementation ("com.google.mediapipe:tasks-vision:latest.release")
+    implementation ("com.google.mediapipe:tasks-vision:0.10.14")
 
     //Gson
     implementation("com.google.code.gson:gson:2.13.1")
