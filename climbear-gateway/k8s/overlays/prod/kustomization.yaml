@@ -26,6 +26,3 @@ patches:
       - op: add
         path: /spec/template/spec/containers/0/envFrom
         value: [{secretRef: {name: climbear-k8s-secret}}]
-      - op: replace
-        path: /spec/replicas
-        value: 2
