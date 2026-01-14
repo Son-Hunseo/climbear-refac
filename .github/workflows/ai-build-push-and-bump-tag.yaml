@@ -1,0 +1,76 @@
+name: AI - Build & Push to ECR and Update k8s deploy tag
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "climbear-ai/**"
+
+permissions:
+  contents: write
+
+jobs:
+  build-push-update:
+    # k8s 리소스 푸시로 다시 재귀적으로 트리거되어 무한으로 호출되는 것을 막음
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_NAME: refac-climbear-ai
+      DEPLOY_FILE: climbear-ai/k8s/overlays/prod/kustomization.yaml
+      AWS_REGION: ap-northeast-2
+      ECR_REPOSITORY: refac/climbear-ai
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Access Key 기반 AWS 인증
+      - name: Configure AWS credentials (Access Key)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Login to Amazon ECR
+        id: ecr_login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set ECR registry env
+        run: |
+          echo "ECR_REGISTRY=${{ steps.ecr_login.outputs.registry }}" >> $GITHUB_ENV
+
+      # 최신 태그 조회 + 0.1 증가 (외부 파이썬 스크립트 사용)
+      - name: Calculate next image tag
+        id: next_tag
+        run: |
+          JSON="$(aws ecr describe-images \
+            --repository-name "${ECR_REPOSITORY}" \
+            --query 'imageDetails' \
+            --output json || echo '[]')"
+          
+          NEXT_TAG="$(echo "$JSON" | python3 .github/scripts/calc_next_tag.py)"
+          echo "NEXT_TAG=${NEXT_TAG}" >> $GITHUB_ENV
+
+      - name: Build & Push Docker image
+        run: |
+          docker build -t ${IMAGE_NAME}:${NEXT_TAG} ./climbear-ai
+          docker tag ${IMAGE_NAME}:${NEXT_TAG} ${ECR_REGISTRY}/${ECR_REPOSITORY}:${NEXT_TAG}
+          docker push ${ECR_REGISTRY}/${ECR_REPOSITORY}:${NEXT_TAG}
+
+      - name: Update kustomization.yaml image tag
+        run: |
+          sed -i -E \
+            "s|(^[[:space:]]*newTag:[[:space:]]*).*$|\1${NEXT_TAG}|" \
+            "${DEPLOY_FILE}"
+
+      - name: Commit and push
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
+          git add "${DEPLOY_FILE}"
+          git commit -m "chore(k8s): bump image tag to ${NEXT_TAG} [skip ci]" || exit 0
+          git push
