@@ -11,7 +11,10 @@ import java.util.List;
 @Repository
 public interface CenterRepository extends JpaRepository<Center, Integer>{
 
-    @Query(value = "SELECT c FROM Center c WHERE function('ST_Distance_Sphere', function('POINT', c.longitude, c.latitude), function('POINT', :longitude, :latitude)) <= :distance")
+    // 유효 범위 내 가장 가까운 센터를 반환하기 위해 정렬 쿼리 추가
+    @Query(value = "SELECT c FROM Center c " +
+            "WHERE function('ST_Distance_Sphere', function('POINT', c.longitude, c.latitude), function('POINT', :longitude, :latitude)) <= :distance " +
+            "ORDER BY function('ST_Distance_Sphere', function('POINT', c.longitude, c.latitude), function('POINT', :longitude, :latitude)) ASC")
     List<Center> findCentersWithinDistance(@Param("latitude") Double latitude, @Param("longitude") Double longitude, @Param("distance") Double distanceInMeters);
 
     List<Center> findByCenterIdNot(int centerId);

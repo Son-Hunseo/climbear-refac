@@ -24,7 +24,7 @@ public class CenterService {
     private final SolvedRouteRepository solvedRouteRepository;
 
     public List<Center> getCenterList() {
-        return centerRepository.findByCenterIdNot(0);
+        return centerRepository.findAll();
     }
 
     public List<CenterRecordResponseDTO> getMyCenterRecord(Integer userId) {

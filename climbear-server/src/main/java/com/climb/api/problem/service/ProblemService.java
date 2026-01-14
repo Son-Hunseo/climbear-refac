@@ -85,7 +85,10 @@ public class ProblemService {
 
         // 사용자의 위치 정보가 없을 경우
         if(requestDTO.latitude() == null || requestDTO.longitude() == null){
-            locatedCenter = centerRepository.findById(0)
+            // 기존에 findById(0) 으로 되어있었다.
+            // Center의 Id가 AutoIncrement로 1부터 시작하기 때문에 id 0인 센터는 있을 수 없기 때문에 수정했다.
+            // 그래서 DB에는 디폴트 센터 즉, 더미를 id 1로 넣어두어야 한다.
+            locatedCenter = centerRepository.findById(1)
                     .orElseThrow(() -> new BusinessException(ErrorCode.RESOURCE_NOT_FOUND, "기본 클라이밍 센터가 설정되지 않았습니다"));
         }
         // 사용자의 위도/경도 50m 내외에 있는 암장 찾기
@@ -114,9 +117,9 @@ public class ProblemService {
         }
     }
 
-    // 사용자가 위치한 센터 찾기 (반경 50m 이내) - ST_Distance_Sphere 사용
+    // 사용자가 위치한 센터 찾기 (반경 5km 이내) - ST_Distance_Sphere 사용
     private Center findLocatedCenter(Double latitude, Double longitude) {
-        final double MAX_DISTANCE_METERS = 50.0;
+        final double MAX_DISTANCE_METERS = 5000.0;
         List<Center> nearCenters = centerRepository.findCentersWithinDistance(latitude, longitude, MAX_DISTANCE_METERS);
         return nearCenters.isEmpty() ? null : nearCenters.get(0);
     }
