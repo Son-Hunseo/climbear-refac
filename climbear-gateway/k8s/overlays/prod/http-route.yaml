@@ -8,9 +8,9 @@ spec:
     - name: web-gateway
       namespace: gateway
       sectionName: http-climbear
-#    - name: web-gateway
-#      namespace: gateway
-#      sectionName: https-climbear
+    - name: web-gateway
+      namespace: gateway
+      sectionName: https-climbear
   hostnames:
     - climbear.sonhs.com
   rules:
