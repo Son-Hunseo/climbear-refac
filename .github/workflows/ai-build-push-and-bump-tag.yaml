@@ -64,7 +64,7 @@ jobs:
       - name: Update kustomization.yaml image tag
         run: |
           sed -i -E \
-            "s|(^[[:space:]]*newTag:[[:space:]]*).*$|\1${NEXT_TAG}|" \
+            "s|(^[[:space:]]*newTag:[[:space:]]*).*$|\1\"${NEXT_TAG}\"|" \
             "${DEPLOY_FILE}"
 
       - name: Commit and push

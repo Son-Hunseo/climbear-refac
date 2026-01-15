@@ -4,11 +4,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: climbear # 나중에 환경 분리 생각해서 climbear-prod 로 바꾸던지..
-
 # base 인줄 알았는데, deprecated되고 resources로 통합됨.
 resources:
   - ../../base
+  - certificate.yaml
+  - http-route.yaml
 
 images:
   - name: climbear-gateway-image
