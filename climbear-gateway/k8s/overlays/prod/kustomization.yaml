@@ -13,7 +13,7 @@ resources:
 images:
   - name: climbear-gateway-image
     newName: 211125633965.dkr.ecr.ap-northeast-2.amazonaws.com/refac/climbear-gateway
-    newTag: 0.2
+    newTag: "1.2"
 
 patches:
   - target:
