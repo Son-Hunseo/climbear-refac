@@ -84,3 +84,4 @@ watchfiles==1.0.5
 websockets==15.0.1
 wheel==0.45.1
 scikit-image==0.25.2
+python-jose[cryptography]==3.3.0

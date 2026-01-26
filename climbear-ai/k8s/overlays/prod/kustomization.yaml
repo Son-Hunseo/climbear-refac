@@ -7,6 +7,7 @@ namespace: climbear # 나중에 환경 분리 생각해서 climbear-prod 로 바
 
 resources:
   - ../../base
+  - external-secret.yaml
 
 images:
   - name: climbear-ai-image
@@ -23,7 +24,7 @@ patches:
         value: [{name: ecr-registry-key}]
       - op: add
         path: /spec/template/spec/containers/0/envFrom
-        value: [{secretRef: {name: climbear-k8s-secret}}]
+        value: [{secretRef: {name: climbear-ai-secret}}]
       - op: replace
         path: /spec/replicas
         value: 1
