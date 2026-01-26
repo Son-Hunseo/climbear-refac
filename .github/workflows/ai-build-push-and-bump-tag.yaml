@@ -55,6 +55,12 @@ jobs:
           NEXT_TAG="$(echo "$JSON" | python3 .github/scripts/calc_next_tag.py)"
           echo "NEXT_TAG=${NEXT_TAG}" >> $GITHUB_ENV
 
+      - name: Download SAM model weights
+        run: |
+          mkdir -p ./climbear-ai/sam
+          curl -L -o ./climbear-ai/sam/sam_vit_b_01ec64.pth \
+            https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth
+
       - name: Build & Push Docker image
         run: |
           docker build -t ${IMAGE_NAME}:${NEXT_TAG} ./climbear-ai
