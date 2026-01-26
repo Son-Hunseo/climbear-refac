@@ -15,6 +15,8 @@ resources:
   - external-secret.yaml
   - ecr-token-external-secret.yaml
   - ecr-auth-external-secret.yaml
+  - certificate.yaml
+  - http-route.yaml
 
 images:
   - name: climbear-server-image
@@ -31,4 +33,4 @@ patches:
         value: [{name: ecr-registry-key}]
       - op: add
         path: /spec/template/spec/containers/0/envFrom
-        value: [{secretRef: {name: climbear-k8s-secret}}]
+        value: [{secretRef: {name: climbear-server-secret}}]

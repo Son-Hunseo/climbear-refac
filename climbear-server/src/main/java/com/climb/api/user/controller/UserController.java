@@ -7,6 +7,7 @@ import com.climb.api.user.service.UserService;
 import com.climb.common.response.CustomApiResponse;
 import com.climb.api.user.controller.swagger.UserControllerSwagger;
 import com.climb.common.response.MessageResponse;
+import com.climb.common.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,15 +23,16 @@ public class UserController {
 
     @UserControllerSwagger.GetUserInfoApi
     @GetMapping("/me")
-    public ResponseEntity<CustomApiResponse<UserInfoResponseDTO>> getUserInfo(@RequestHeader("X-USER-ID") Integer userId){
+    public ResponseEntity<CustomApiResponse<UserInfoResponseDTO>> getUserInfo(){
+        Integer userId = SecurityUtil.getCurrentUserId();
         UserInfoResponseDTO response = userService.getUserInfo(userId);
         return ResponseEntity.ok(CustomApiResponse.success(response));
     }
 
     @UserControllerSwagger.SetUserInfoApi
     @PatchMapping("/info")
-    public ResponseEntity<CustomApiResponse<String>> setUserInfo(@RequestHeader("X-USER-ID") Integer userId,
-                                                             @RequestBody SetUserInfoRequestDTO request){
+    public ResponseEntity<CustomApiResponse<String>> setUserInfo(@RequestBody SetUserInfoRequestDTO request){
+        Integer userId = SecurityUtil.getCurrentUserId();
         CustomApiResponse<String> result = userService.setUserInfo(userId, request);
 
         if (result.getStatus() == CustomApiResponse.Status.SUCCESS) {
@@ -45,14 +47,16 @@ public class UserController {
 
     @UserControllerSwagger.DeleteUserApi
     @DeleteMapping
-    public ResponseEntity<CustomApiResponse<MessageResponse>> deleteUser(@RequestHeader("X-USER-ID") Integer userId){
+    public ResponseEntity<CustomApiResponse<MessageResponse>> deleteUser(){
+        Integer userId = SecurityUtil.getCurrentUserId();
         userService.deleteUser(userId);
         return ResponseEntity.ok(CustomApiResponse.success(MessageResponse.of("회원 탈퇴 성공")));
     }
 
     @UserControllerSwagger.GetUserExpApi
     @GetMapping("/exp")
-    public ResponseEntity<CustomApiResponse<UserExpResponseDTO>> getExpUser(@RequestHeader("X-USER-ID") Integer userId){
+    public ResponseEntity<CustomApiResponse<UserExpResponseDTO>> getExpUser(){
+        Integer userId = SecurityUtil.getCurrentUserId();
         UserExpResponseDTO responseDTO = userService.getExpUser(userId);
         return ResponseEntity.ok(CustomApiResponse.success(responseDTO));
     }

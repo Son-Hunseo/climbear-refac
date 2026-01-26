@@ -7,6 +7,7 @@ import com.climb.api.solution.domain.dto.request.NonMemberProblemRequestDTO;
 import com.climb.api.solution.domain.dto.response.ProblemSolutionResponseDTO;
 import com.climb.api.solution.service.SolutionService;
 import com.climb.common.response.CustomApiResponse;
+import com.climb.common.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,8 @@ public class SolutionController {
     // 홀드 데이터로 솔루션 제공
     @SolutionControllerSwagger.GetProblemSolutionApi
     @GetMapping("/problem/{problemId}")
-    public ResponseEntity<CustomApiResponse<ProblemSolutionResponseDTO>> getProblemSolution(@RequestHeader("X-USER-ID") Integer userId,
-                                                                                            @PathVariable("problemId") @Valid int problemId){
+    public ResponseEntity<CustomApiResponse<ProblemSolutionResponseDTO>> getProblemSolution(@PathVariable("problemId") @Valid int problemId){
+        Integer userId = SecurityUtil.getCurrentUserId();
         ProblemSolutionResponseDTO response = solutionService.getProblemSolution(userId, problemId);
         return ResponseEntity.ok(CustomApiResponse.success(response));
     }
@@ -33,9 +34,9 @@ public class SolutionController {
     // 회원이 설정한 실패 지점에서 솔루션 제공
     @SolutionControllerSwagger.GetFailureSolutionApi
     @PostMapping("/failure/{problemId}")
-    public ResponseEntity<CustomApiResponse<ProblemSolutionResponseDTO>> getFailureSolution(@RequestHeader("X-USER-ID") Integer userId,
-                                                                                            @PathVariable("problemId") @Valid int problemId,
+    public ResponseEntity<CustomApiResponse<ProblemSolutionResponseDTO>> getFailureSolution(@PathVariable("problemId") @Valid int problemId,
                                                                                             @RequestBody FailureRequestDTO failureRequestDTO){
+        Integer userId = SecurityUtil.getCurrentUserId();
         ProblemSolutionResponseDTO response = solutionService.getFailureSolution(userId, problemId, failureRequestDTO);
         return ResponseEntity.ok(CustomApiResponse.success(response));
     }

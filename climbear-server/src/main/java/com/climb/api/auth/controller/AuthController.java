@@ -10,6 +10,7 @@ import com.climb.api.auth.service.AuthService;
 import com.climb.api.auth.service.RefreshTokenService;
 import com.climb.api.user.service.UserService;
 import com.climb.common.response.CustomApiResponse;
+import com.climb.common.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,9 @@ public class AuthController {
 
     @AuthControllerSwagger.RefreshTokenApi
     @PostMapping("/refresh")
-    public ResponseEntity<CustomApiResponse<TokenResponseDTO>> refreshToken(@RequestHeader("X-USER-ID") Integer userId,
-                                                                            @RequestBody TokenRefreshRequestDTO request) {
+    public ResponseEntity<CustomApiResponse<TokenResponseDTO>> refreshToken(@RequestBody TokenRefreshRequestDTO request) {
+        Integer userId = SecurityUtil.getCurrentUserId();
+
         // 리프레시 토큰 검증
         refreshTokenService.validateRefreshToken(request.refreshToken());
 
@@ -51,7 +53,8 @@ public class AuthController {
 
     @AuthControllerSwagger.LogoutApi
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestHeader("X-USER-ID") Integer userId) {
+    public ResponseEntity<Void> logout() {
+        Integer userId = SecurityUtil.getCurrentUserId();
         refreshTokenService.deleteRefreshToken(userId);
         return ResponseEntity.noContent().build();
     }

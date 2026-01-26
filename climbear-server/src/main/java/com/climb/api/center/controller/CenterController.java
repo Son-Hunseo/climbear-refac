@@ -5,11 +5,11 @@ import com.climb.api.center.domain.dto.response.CenterRecordResponseDTO;
 import com.climb.api.center.domain.entity.Center;
 import com.climb.api.center.service.CenterService;
 import com.climb.common.response.CustomApiResponse;
+import com.climb.common.util.SecurityUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,7 +32,8 @@ public class CenterController {
 
     @CenterControllerSwagger.GetMyCenterRecordApi
     @GetMapping("/my")
-    public ResponseEntity<CustomApiResponse<List<CenterRecordResponseDTO>>> getMyCenterRecord(@RequestHeader("X-USER-ID") Integer userId){
+    public ResponseEntity<CustomApiResponse<List<CenterRecordResponseDTO>>> getMyCenterRecord(){
+        Integer userId = SecurityUtil.getCurrentUserId();
         List<CenterRecordResponseDTO> response = centerService.getMyCenterRecord(userId);
         return ResponseEntity.ok(CustomApiResponse.success(response));
     }
