@@ -1,5 +1,0 @@
-# application-prod.yml - 운영 환경
-spring:
-  config:
-    activate:
-      on-profile: prod
