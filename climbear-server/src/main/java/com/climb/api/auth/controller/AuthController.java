@@ -30,10 +30,8 @@ public class AuthController {
     @AuthControllerSwagger.RefreshTokenApi
     @PostMapping("/refresh")
     public ResponseEntity<CustomApiResponse<TokenResponseDTO>> refreshToken(@RequestBody TokenRefreshRequestDTO request) {
-        Integer userId = SecurityUtil.getCurrentUserId();
-
-        // 리프레시 토큰 검증
-        refreshTokenService.validateRefreshToken(request.refreshToken());
+        // 리프레시 토큰 검증 및 userId 추출
+        Integer userId = refreshTokenService.validateRefreshTokenAndGetUserId(request.refreshToken());
 
         String email = userService.getEmailByUserId(userId);
 

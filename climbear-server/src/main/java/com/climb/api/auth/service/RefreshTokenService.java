@@ -79,14 +79,13 @@ public class RefreshTokenService {
         return token;
     }
 
-    // 리프레시 토큰 검증
+    // 리프레시 토큰 검증 및 userId 반환
     @Transactional(readOnly = true)
-    public void validateRefreshToken(String token) {
+    public Integer validateRefreshTokenAndGetUserId(String token) {
         if (token.startsWith("Bearer ")) {
             token = token.substring(7);
         }
 
-        // JWT 형식 검증은 Gateway에서 수행, 여기서는 DB에 있는지만 확인
         RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
                 .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_REFRESH_TOKEN));
 
@@ -94,6 +93,8 @@ public class RefreshTokenService {
         if (refreshToken.isExpired()) {
             throw new BusinessException(ErrorCode.EXPIRED_REFRESH_TOKEN);
         }
+
+        return refreshToken.getUserId();
     }
 
     @Transactional

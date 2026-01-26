@@ -24,5 +24,5 @@ class AuthInterceptor() : Interceptor {
 
 private fun shouldExcludeAuth(url: HttpUrl): Boolean {
     val path = url.encodedPath
-    return path.startsWith("/api/v1/auth")
+    return path == "/api/v1/auth/kakao/login"
 }

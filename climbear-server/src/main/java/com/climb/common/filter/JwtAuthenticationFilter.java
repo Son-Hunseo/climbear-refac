@@ -35,6 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final List<String> EXCLUDED_PATHS = Arrays.asList(
             "/api/v1/auth/kakao/login",
+            "/api/v1/auth/refresh",
             "/api/v1/*/non-member/**",
             "/api/v1/centers/list",
             "/swagger-ui/**",
